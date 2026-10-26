@@ -1,6 +1,6 @@
 # Arjun Reddy · Portfolio
 
-My portfolio as a backend software developer: REST APIs, data pipelines and LLM features.
+My portfolio as a software engineer working across backend services, data engineering and AI.
 
 **Live site:** https://arjunreddy91100.github.io/Arjun_Reddy_Portfolio/
 
