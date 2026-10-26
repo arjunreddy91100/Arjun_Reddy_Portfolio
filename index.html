@@ -122,6 +122,18 @@ section.block { padding: 120px 0 0; position: relative; }
 .stat:nth-child(1) strong { color: var(--req); } .stat:nth-child(2) strong { color: var(--data); } .stat:nth-child(3) strong { color: var(--ai); }
 .stat span { display: block; margin-top: 8px; font-size: 14.5px; color: var(--dim); }
 
+/* ---------- About ---------- */
+.about { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 48px; margin-top: 44px; align-items: start; }
+.about-text { display: flex; flex-direction: column; gap: 18px; font-size: 18px; color: var(--dim); max-width: 62ch; }
+.about-text strong { color: var(--text); font-weight: 600; }
+.facts { border-radius: 20px; border: 1px solid var(--edge); background: var(--panel); overflow: hidden; }
+.fact { display: grid; grid-template-columns: 118px minmax(0, 1fr); gap: 14px; padding: 15px 20px; border-top: 1px solid var(--edge); font-size: 15.5px; }
+.fact:first-child { border-top: 0; }
+.fact code { font: 500 12.5px/1.9 var(--mono); color: var(--data); }
+.fact span { color: var(--text); }
+@media (max-width: 980px) { .about { grid-template-columns: 1fr; gap: 28px; } }
+@media (max-width: 640px) { .about-text { font-size: 16.5px; } .fact { grid-template-columns: 96px minmax(0, 1fr); padding: 13px 16px; } }
+
 /* ---------- Projects ---------- */
 .shiplog { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin: 34px 0 28px; padding: 16px 20px; border-radius: 16px; border: 1px solid var(--edge); background: var(--panel); }
 .shiplog strong { font: 700 22px/1 var(--display); color: var(--data); }
@@ -270,6 +282,7 @@ footer { padding: 46px 0 50px; display: flex; flex-wrap: wrap; justify-content: 
   <div class="wrap">
     <a class="logo" href="#top"><i>AR</i>Arjun Reddy</a>
     <nav class="links" aria-label="Sections">
+      <a href="#about">About</a>
       <a href="#work">Work</a>
       <a href="#ai">How I build</a>
       <a href="#experience">Experience</a>
@@ -314,6 +327,26 @@ footer { padding: 46px 0 50px; display: flex; flex-wrap: wrap; justify-content: 
       <div class="stat"><strong data-count="32">32</strong><span>end-to-end tests on Tally, all passing</span></div>
       <div class="stat"><strong data-count="1" data-suffix="/day">1/day</strong><span>my goal: ship something every day</span></div>
     </div>
+
+    <section class="block" id="about">
+      <div class="kicker reveal">About me</div>
+      <h2 class="reveal">I like owning a feature from the first sketch to production.</h2>
+      <div class="about">
+        <div class="about-text reveal">
+          <p>I’m <strong>Arjun</strong>, a software engineer in Milwaukee with 4+ years of full-time experience. Right now I build an enterprise HR platform at <strong>Rs Technologies</strong>: the Angular screens, the REST APIs, the SQL Server data model, the security, and the pipelines that feed reporting.</p>
+          <p>Most of my code is <strong>Python and SQL</strong>, with C#/.NET and Angular alongside it. I enjoy the whole path data takes through a product: how it’s modeled, how it moves through Kafka and Azure pipelines, and how it ends up in a report someone trusts.</p>
+          <p>Lately I’ve been building <strong>LLM-backed tools</strong> with OpenAI that route requests, summarize and retrieve information. I’ve also set myself a goal to build and ship something new every day, with AI as my pair programmer and tests as my safety net. Everything I ship lands on this page.</p>
+        </div>
+        <div class="facts reveal" aria-label="Quick facts">
+          <div class="fact"><code>role</code><span>Software Engineer</span></div>
+          <div class="fact"><code>based_in</code><span>Milwaukee, WI</span></div>
+          <div class="fact"><code>currently</code><span>Software Developer at Rs Technologies</span></div>
+          <div class="fact"><code>focus</code><span>Backend services, data engineering, AI features</span></div>
+          <div class="fact"><code>education</code><span>M.S. Information Technology, University of Wisconsin–Milwaukee</span></div>
+          <div class="fact"><code>open_to</code><span>Software Engineer, Software Developer, Data Engineer and AI Engineer roles</span></div>
+        </div>
+      </div>
+    </section>
 
     <section class="block" id="work">
       <div class="kicker reveal">Selected work</div>
