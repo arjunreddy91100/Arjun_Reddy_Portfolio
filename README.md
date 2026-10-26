@@ -4,7 +4,7 @@ My portfolio as a software engineer working across backend services, data engine
 
 **Live site:** https://arjunreddy91100.github.io/Arjun_Reddy_Portfolio/
 
-The site is laid out like API documentation: each section is an endpoint (`GET /experience`, `GET /projects`, `POST /contact`), and the hero is a JSON response describing me. It works in light and dark mode and on phones, and it has no build step and no dependencies.
+The hero is an interactive 3D model of the kind of system I build, made with three.js: requests flow from users into a REST API, data streams through Kafka and pipelines into a warehouse, and an LLM answers. Visitors can drag to rotate it and hover any part to see where I've used it. The rest of the page has 3D tilt project cards, a build log, and a section on how I build with AI. There's no build step: it's plain HTML, CSS and JavaScript.
 
 ## What's inside
 
