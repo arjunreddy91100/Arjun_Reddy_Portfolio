@@ -3,7 +3,7 @@
 export const SITE = {
   name: 'Arjun Reddy',
   domain: 'arjunreddy.dev',
-  url: 'https://arjunreddy.dev',
+  url: 'https://www.arjunreddy.dev',
   title: 'Arjun Reddy · Software Engineer',
   description:
     'Projects, notes and lessons from building data pipelines and AI tools with Python, SQL, Azure and LLMs.',

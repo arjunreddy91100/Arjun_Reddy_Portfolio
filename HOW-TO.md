@@ -108,7 +108,7 @@ push to `main`.
 
 **One-time setup** (needed before the first deploy of this version): on GitHub, open the repo's
 **Settings → Pages** and set **Source** to **GitHub Actions**. The custom domain keeps working because
-`public/CNAME` is copied into every build.
+`public/CNAME` (www.arjunreddy.dev) is copied into every build; keep it matching the Custom domain set in **Settings → Pages**.
 
 After that, publishing is:
 

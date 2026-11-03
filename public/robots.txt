@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arjunreddy.dev/sitemap-index.xml
+Sitemap: https://www.arjunreddy.dev/sitemap-index.xml
