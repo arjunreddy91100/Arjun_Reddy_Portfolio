@@ -1,0 +1,20 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import { getPosts } from '../../lib/content';
+
+const posts = await getPosts();
+---
+
+<Base title="Writing" description="Notes and lessons from building data pipelines, backend services and AI tools.">
+  <header class="page-head">
+    <p class="eyebrow">WRITING</p>
+    <h1>Notes from the build</h1>
+    <p class="lede">
+      What I'm learning about data engineering, AI and backend work. <a href="/rss.xml">Subscribe via RSS</a>.
+    </p>
+  </header>
+  <section class="section" aria-label="All posts">
+    {posts.length > 0 ? <PostList posts={posts} syncUrl headingLevel="h2" /> : <p class="empty">No posts yet. The first one is on the way.</p>}
+  </section>
+</Base>

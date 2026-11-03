@@ -1,0 +1,29 @@
+---
+import Chips from './Chips.astro';
+import { isLiveStatus, type Project } from '../lib/content';
+
+interface Props {
+  project: Project;
+  headingLevel?: 'h2' | 'h3';
+}
+const { project, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const d = project.data;
+const href = `/projects/${project.id}/`;
+---
+
+<article class="project-card">
+  <div class="project-top">
+    <span class:list={['status', { 'status-live': isLiveStatus(d.status) }]}>{d.status}</span>
+    <span class="category">{d.category}</span>
+  </div>
+  <Heading><a href={href}>{d.title}</a></Heading>
+  <p>{d.summary}</p>
+  {d.stats && <p class="stats">{d.stats}</p>}
+  <Chips items={d.tech} />
+  <div class="project-links">
+    <a href={href} aria-label={`How ${d.title} works`}>How it works</a>
+    {d.demo && <a href={d.demo} aria-label={`Try ${d.title}`}>Try it</a>}
+    {d.repo && <a href={d.repo} aria-label={`${d.title} code on GitHub`}>Code</a>}
+  </div>
+</article>

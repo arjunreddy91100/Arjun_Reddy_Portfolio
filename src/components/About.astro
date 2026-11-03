@@ -1,0 +1,31 @@
+---
+import { SITE } from '../config';
+
+interface Props {
+  /** The homepage shows a section heading; the /about page has its own h1. */
+  heading?: boolean;
+}
+const { heading = true } = Astro.props;
+---
+
+<div class="about">
+  {heading && <h2 id="about-title" class="section-title">About</h2>}
+  <div class="about-body">
+    <p>
+      I'm a software engineer in Milwaukee with 4+ years of full-time experience. I build backend services and
+      APIs, the data pipelines that feed them, and AI features. Mostly Python and SQL, with C#/.NET, Angular,
+      Azure and Databricks alongside.
+    </p>
+    <dl class="facts">
+      <div><dt>Currently</dt><dd>Software Developer, Rs Technologies</dd></div>
+      <div><dt>Education</dt><dd>M.S. Information Technology, University of Wisconsin–Milwaukee</dd></div>
+      <div><dt>Open to</dt><dd>Software, Data and AI Engineer roles</dd></div>
+    </dl>
+    <div class="actions">
+      <a href={SITE.resume} class="btn btn-dark">Download resume</a>
+      <a href={SITE.linkedin} class="btn" rel="me">LinkedIn</a>
+      <a href={SITE.github} class="btn" rel="me">GitHub</a>
+      <a href={`mailto:${SITE.email}`} class="btn">Email me</a>
+    </div>
+  </div>
+</div>

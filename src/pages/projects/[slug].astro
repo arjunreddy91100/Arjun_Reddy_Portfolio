@@ -1,0 +1,40 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Chips from '../../components/Chips.astro';
+import { getProjects, isLiveStatus, type Project } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props as { project: Project };
+const { Content } = await render(project);
+const d = project.data;
+---
+
+<Base title={d.title} description={d.summary}>
+  <article class="article">
+    <header class="article-head">
+      <a href="/projects/" class="back">← All projects</a>
+      <div class="project-top" style="justify-content:flex-start;margin-top:24px">
+        <span class:list={['status', { 'status-live': isLiveStatus(d.status) }]}>{d.status}</span>
+        <span class="category">{d.category}</span>
+      </div>
+      <h1>{d.title}</h1>
+      <p class="lede">{d.summary}</p>
+      {d.stats && <p class="meta" style="font-family:var(--mono);margin:16px 0 0">{d.stats}</p>}
+      <Chips items={d.tech} />
+      {(d.repo || d.demo) && (
+        <div class="actions">
+          {d.demo && <a href={d.demo} class="btn btn-dark">Try it</a>}
+          {d.repo && <a href={d.repo} class:list={['btn', { 'btn-dark': !d.demo }]}>Code on GitHub</a>}
+        </div>
+      )}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>

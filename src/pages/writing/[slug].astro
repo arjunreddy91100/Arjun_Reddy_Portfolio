@@ -1,0 +1,34 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { formatDate, getPosts, readTime, tagSlug, type Post } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: Post };
+const { Content } = await render(post);
+const d = post.data;
+---
+
+<Base title={d.title} description={d.summary} type="article" publishedTime={d.date}>
+  <article class="article">
+    <header class="article-head">
+      <a href="/writing/" class="back">← All writing</a>
+      <h1>{d.title}</h1>
+      <p class="meta">
+        <time datetime={d.date.toISOString().slice(0, 10)}>{formatDate(d.date)}</time> · {readTime(post)} min read
+      </p>
+      {d.tags.length > 0 && (
+        <ul class="chips" aria-label="Tags">
+          {d.tags.map((t) => <li><a href={`/writing/?tag=${tagSlug(t)}`} style="text-decoration:none;color:inherit">{t}</a></li>)}
+        </ul>
+      )}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Base>

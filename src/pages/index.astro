@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Featured from '../components/Featured.astro';
+import PostList from '../components/PostList.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Newsletter from '../components/Newsletter.astro';
+import About from '../components/About.astro';
+import { getFeatured, getPosts, getProjects } from '../lib/content';
+
+const [featured, posts, projects] = await Promise.all([getFeatured(), getPosts(), getProjects()]);
+const HOME_POSTS = 3;
+const HOME_PROJECTS = 4;
+---
+
+<Base>
+  <section class="hero">
+    <p class="eyebrow">SOFTWARE ENGINEER · MILWAUKEE, WI</p>
+    <h1>I build data pipelines and AI tools you can trust.</h1>
+    <p class="lede">
+      Projects, notes and lessons from building with Python, SQL, Azure and LLMs. Open to Data and AI Engineer roles.
+    </p>
+  </section>
+
+  {featured && <Featured featured={featured} />}
+
+  {posts.length > 0 && (
+    <section id="writing" class="section" aria-labelledby="writing-title">
+      <div class="section-head">
+        <h2 id="writing-title" class="section-title">Writing</h2>
+        <a href="/writing/">View all<span class="visually-hidden"> posts</span></a>
+      </div>
+      <PostList posts={posts} limit={HOME_POSTS} />
+    </section>
+  )}
+
+  {projects.length > 0 && (
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <div class="section-head">
+        <h2 id="projects-title" class="section-title">Projects</h2>
+        <a href="/projects/">View all<span class="visually-hidden"> projects</span></a>
+      </div>
+      <div class="project-grid">
+        {projects.slice(0, HOME_PROJECTS).map((p) => <ProjectCard project={p} />)}
+      </div>
+    </section>
+  )}
+
+  <Newsletter />
+
+  <section id="about" class="section" aria-labelledby="about-title">
+    <About />
+  </section>
+</Base>

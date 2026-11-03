@@ -1,0 +1,76 @@
+---
+import Chips from './Chips.astro';
+import type { Featured } from '../lib/content';
+import { formatDate, readTime } from '../lib/content';
+
+interface Props {
+  featured: NonNullable<Featured>;
+}
+const { featured } = Astro.props;
+
+const isProject = featured.kind === 'project';
+const entry = featured.entry;
+const href = `/${isProject ? 'projects' : 'writing'}/${entry.id}/`;
+
+let label: string, title: string, pitch: string, chips: string[], cta: string;
+let terminal: { context?: string; question: string; code?: string; answer: string; check?: string } | undefined;
+let panelTitle = '';
+let panelContext = '';
+
+if (featured.kind === 'project') {
+  const d = featured.entry.data;
+  label = d.category;
+  title = d.headline ?? d.title;
+  pitch = d.pitch ?? d.summary;
+  chips = d.tech;
+  cta = 'See how it works';
+  terminal = d.terminal;
+  panelTitle = d.title;
+  panelContext = `~/projects/${featured.entry.id}`;
+} else {
+  const d = featured.entry.data;
+  label = d.tags[0] ?? 'Writing';
+  title = d.title;
+  pitch = d.summary;
+  chips = d.tags;
+  cta = 'Read the post';
+  panelTitle = d.thumb ?? d.title;
+  panelContext = `${formatDate(d.date)} · ${readTime(featured.entry)} min read`;
+}
+---
+
+<section class="featured" aria-labelledby="featured-title">
+  <a href={href} class="featured-card card-link">
+    <div class="terminal" aria-hidden={terminal ? undefined : 'true'}>
+      <div class="terminal-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      {terminal ? (
+        <div class="terminal-body">
+          <div class="t-muted">{terminal.context ?? panelContext}</div>
+          <div><span class="t-muted">Question</span>&nbsp; {terminal.question}</div>
+          {terminal.code && <div class="t-code">{terminal.code}</div>}
+          <div><span class="t-muted">Answer</span>&nbsp; <span class="t-answer">{terminal.answer}</span></div>
+          {terminal.check && <div class="t-check">✓ {terminal.check}</div>}
+        </div>
+      ) : (
+        <div class="terminal-body">
+          <div class="t-muted">{panelContext}</div>
+          <div class="t-title">{panelTitle}</div>
+        </div>
+      )}
+    </div>
+    <div class="featured-text">
+      <div class="featured-label">
+        <strong>Featured {isProject ? 'project' : 'post'}</strong>
+        <span aria-hidden="true">·</span>
+        <span>{label}</span>
+      </div>
+      <h2 id="featured-title" class="card-title">{title}</h2>
+      <p>{pitch}</p>
+      <Chips items={chips} label={isProject ? 'Tech used' : 'Tags'} />
+      <span class="more">
+        {cta}
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+      </span>
+    </div>
+  </a>
+</section>

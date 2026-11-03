@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getProjects } from '../../lib/content';
+
+const projects = await getProjects();
+---
+
+<Base title="Projects" description="Data pipelines, AI tools and web apps I've built, with how each one works.">
+  <header class="page-head">
+    <p class="eyebrow">PROJECTS</p>
+    <h1>Things I've built</h1>
+    <p class="lede">Each one has a write-up of how it works, what broke, and the code.</p>
+  </header>
+  <section class="section" aria-label="All projects">
+    {projects.length > 0 ? (
+      <div class="project-grid">
+        {projects.map((p) => <ProjectCard project={p} headingLevel="h2" />)}
+      </div>
+    ) : (
+      <p class="empty">No projects yet.</p>
+    )}
+  </section>
+</Base>

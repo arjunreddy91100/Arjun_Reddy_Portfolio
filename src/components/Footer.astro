@@ -1,0 +1,15 @@
+---
+import { SITE } from '../config';
+import { getNav } from '../lib/nav';
+
+const links = await getNav();
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>© 2026 {SITE.name} · {SITE.domain}</span>
+    <nav aria-label="Footer">
+      {links.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+  </div>
+</footer>

@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import About from '../components/About.astro';
+---
+
+<Base title="About" description="Software engineer in Milwaukee building backend services, data pipelines and AI features.">
+  <header class="page-head">
+    <p class="eyebrow">ABOUT</p>
+    <h1>Hi, I'm Arjun.</h1>
+  </header>
+  <section class="section" aria-label="About Arjun">
+    <About heading={false} />
+  </section>
+</Base>

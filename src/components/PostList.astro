@@ -1,0 +1,85 @@
+---
+// Post cards with tag filter pills. `limit` caps how many cards show at once
+// (the homepage shows 3); the filter picks from every post passed in.
+import { WRITING_TAGS } from '../config';
+import { formatDate, readTime, tagSlug, type Post } from '../lib/content';
+
+interface Props {
+  posts: Post[];
+  limit?: number;
+  /** Keep the chosen tag in the address bar as ?tag=… (used on /writing). */
+  syncUrl?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+const { posts, limit = 0, syncUrl = false, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+
+const extraTags = [...new Set(posts.flatMap((p) => p.data.tags))].filter((t) => !WRITING_TAGS.includes(t));
+const tags = [...WRITING_TAGS, ...extraTags];
+
+function thumbTone(post: Post): number {
+  const i = WRITING_TAGS.indexOf(post.data.tags[0] ?? '');
+  return (i < 0 ? 0 : i) % 4;
+}
+---
+
+<div class="post-list" data-limit={limit} data-sync-url={syncUrl ? 'true' : undefined}>
+  <div class="filters" role="group" aria-label="Filter posts by tag" hidden>
+    <button type="button" class="pill" data-tag="" aria-pressed="true">All</button>
+    {tags.map((t) => (
+      <button type="button" class="pill" data-tag={tagSlug(t)} aria-pressed="false">{t}</button>
+    ))}
+  </div>
+  <div class="post-grid">
+    {posts.map((post, i) => (
+      <a
+        href={`/writing/${post.id}/`}
+        class="post-card card-link"
+        data-tags={post.data.tags.map(tagSlug).join(' ')}
+        hidden={limit > 0 && i >= limit}
+      >
+        <div class={`thumb thumb-${thumbTone(post)}`} aria-hidden="true">{post.data.thumb ?? post.data.tags[0] ?? 'Note'}</div>
+        {post.data.tags[0] && <span class="post-tag">{post.data.tags[0]}</span>}
+        <Heading class="card-title">{post.data.title}</Heading>
+        <span class="meta">
+          <time datetime={post.data.date.toISOString().slice(0, 10)}>{formatDate(post.data.date)}</time> · {readTime(post)} min read
+        </span>
+      </a>
+    ))}
+  </div>
+  <p class="empty" role="status" hidden>No posts with this tag yet.</p>
+</div>
+
+<script>
+  for (const list of document.querySelectorAll<HTMLElement>('.post-list')) {
+    const filters = list.querySelector<HTMLElement>('.filters')!;
+    const pills = [...list.querySelectorAll<HTMLButtonElement>('.pill')];
+    const cards = [...list.querySelectorAll<HTMLElement>('.post-card')];
+    const empty = list.querySelector<HTMLElement>('.empty')!;
+    const limit = Number(list.dataset.limit) || Infinity;
+    const syncUrl = list.dataset.syncUrl === 'true';
+
+    const apply = (tag: string) => {
+      pills.forEach((p) => p.setAttribute('aria-pressed', String(p.dataset.tag === tag)));
+      let shown = 0;
+      for (const card of cards) {
+        const match = !tag || (card.dataset.tags ?? '').split(' ').includes(tag);
+        card.hidden = !match || shown >= limit;
+        if (!card.hidden) shown++;
+      }
+      empty.hidden = shown > 0;
+      if (syncUrl) {
+        const url = new URL(location.href);
+        if (tag) url.searchParams.set('tag', tag);
+        else url.searchParams.delete('tag');
+        history.replaceState(null, '', url);
+      }
+    };
+
+    pills.forEach((p) => p.addEventListener('click', () => apply(p.dataset.tag ?? '')));
+    filters.hidden = false;
+
+    const initial = syncUrl ? new URLSearchParams(location.search).get('tag') : null;
+    if (initial && pills.some((p) => p.dataset.tag === initial)) apply(initial);
+  }
+</script>

@@ -1,0 +1,39 @@
+---
+import { NEWSLETTER } from '../config';
+
+const live = NEWSLETTER.action.trim() !== '';
+---
+
+<section id="newsletter" class="newsletter" aria-labelledby="newsletter-title">
+  <div>
+    <p class="eyebrow">NEWSLETTER</p>
+    <h2 id="newsletter-title">{NEWSLETTER.name}</h2>
+    <p>{NEWSLETTER.pitch}</p>
+  </div>
+  <form
+    class="nl-form"
+    method="post"
+    action={live ? NEWSLETTER.action : undefined}
+    target={live ? '_blank' : undefined}
+    data-live={live ? 'true' : 'false'}
+  >
+    <label for="nl-email">Email address</label>
+    <div class="nl-row">
+      <input id="nl-email" name={NEWSLETTER.field} type="email" required autocomplete="email" placeholder="you@example.com" />
+      <button type="submit">Subscribe</button>
+    </div>
+    <p class="nl-note" role="status" aria-live="polite"></p>
+  </form>
+</section>
+
+<script>
+  // Until NEWSLETTER.action is set in src/config.ts, nothing is sent anywhere.
+  const form = document.querySelector<HTMLFormElement>('.nl-form');
+  if (form && form.dataset.live !== 'true') {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const note = form.querySelector('.nl-note');
+      if (note) note.textContent = 'Thanks! The newsletter is launching soon. Sign-ups open here when it does.';
+    });
+  }
+</script>

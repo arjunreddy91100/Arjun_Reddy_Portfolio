@@ -1,0 +1,13 @@
+---
+interface Props {
+  items: string[];
+  label?: string;
+}
+const { items, label = 'Tech used' } = Astro.props;
+---
+
+{items.length > 0 && (
+  <ul class="chips" aria-label={label}>
+    {items.map((t) => <li>{t}</li>)}
+  </ul>
+)}

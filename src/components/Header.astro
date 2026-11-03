@@ -1,0 +1,23 @@
+---
+import { SITE } from '../config';
+import { getNav } from '../lib/nav';
+
+const links = await getNav();
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => !href.includes('#') && path.startsWith(href.replace(/\/$/, ''));
+---
+
+<header class="site-header">
+  <nav aria-label="Main" class="wrap site-nav">
+    <a href="/" class="brand">
+      <span class="brand-mark" aria-hidden="true">AR</span>
+      <span>{SITE.name}</span>
+    </a>
+    <div class="nav-links">
+      {links.map((l) => (
+        <a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
+      <a href={SITE.resume} class="btn btn-dark">Resume</a>
+    </div>
+  </nav>
+</header>
